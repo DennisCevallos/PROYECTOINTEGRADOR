@@ -22,6 +22,8 @@
 
   <ItemGroup>
     <Folder Include="Views\Generos\" />
+    <Folder Include="Views\Menus\" />
+    <Folder Include="Views\Logins\" />
   </ItemGroup>
 
 </Project>
