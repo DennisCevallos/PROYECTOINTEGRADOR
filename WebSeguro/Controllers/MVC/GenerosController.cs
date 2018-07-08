@@ -33,6 +33,7 @@ namespace WebSeguro.Controllers.MVC
             catch (Exception ex)
             {
                 return BadRequest();
+                //hola todos
             }
         }
         public async Task<IActionResult> Create()
