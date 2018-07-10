@@ -1,0 +1,63 @@
+﻿@model Entidades.Negocio.Poliza
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Poliza</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaCoverturaI)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FechaCoverturaI)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.FechaCoverturaF)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.FechaCoverturaF)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.NumPoliza)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.NumPoliza)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Factura)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Factura)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TotValAsegurado)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotValAsegurado)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TotValPrima)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TotValPrima)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IdPersonaNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IdPersonaNavigation.IdPersona)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="IdPoliza" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

@@ -10,30 +10,29 @@ using Servicios.Interfaces;
 
 namespace WebSeguro.Controllers.MVC
 {
-    public class GenerosController : Controller
+    public class SiniestroesController : Controller
     {
-
         private readonly IApiServicio apiServicios;
 
 
-        public GenerosController(IApiServicio apiServicios)
+        public SiniestroesController(IApiServicio apiServicios)
         {
             this.apiServicios = apiServicios;
         }
         public async Task<IActionResult> Index()
         {
 
-            var lista = new List<Genero>();
+            var lista = new List<Siniestro>();
             try
             {
-                lista = await apiServicios.Listar<Genero>(new Uri(WebApp.BaseAddress)
-                                                                    , "api/Generoes/ListarGenero");
+                lista = await apiServicios.Listar<Siniestro>(new Uri(WebApp.BaseAddress)
+                                                                    , "api/Siniestroes/ListarSiniestro");
                 return View(lista);
             }
             catch (Exception ex)
             {
                 return BadRequest();
-                
+
             }
         }
         public async Task<IActionResult> Create()
@@ -41,19 +40,19 @@ namespace WebSeguro.Controllers.MVC
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Genero genero)
+        public async Task<IActionResult> Create(Siniestro siniestro)
         {
-           Response response = new Response();
+            Response response = new Response();
             try
             {
-                response = await apiServicios.InsertarAsync(genero,
+                response = await apiServicios.InsertarAsync(siniestro,
                                                              new Uri(WebApp.BaseAddress),
-                                                             "api/Generoes/InsertarGenero");
+                                                             "api/Siniestroes/InsertarSiniestro");
                 if (response.IsSuccess)
                 {
                     return RedirectToAction("Index");
                 }
-                 return View(genero);
+                return View(siniestro);
 
             }
             catch (Exception ex)
@@ -70,19 +69,22 @@ namespace WebSeguro.Controllers.MVC
                 if (!string.IsNullOrEmpty(id))
                 {
                     var respuesta = await apiServicios.SeleccionarAsync<Response>(id, new Uri(WebApp.BaseAddress),
-                                                                  "api/Generoes");
+                                                                  "api/Siniestroes");
                     if (respuesta.IsSuccess)
                     {
 
-                        var respuestagenero = JsonConvert.DeserializeObject<Genero>(respuesta.Resultado.ToString());
-                        var genero = new Genero
+                        var respuestasiniestro = JsonConvert.DeserializeObject<Siniestro>(respuesta.Resultado.ToString());
+                        var siniestro = new Siniestro
                         {
-                            IdGenero = respuestagenero.IdGenero,
-                            Descripcion = respuestagenero.Descripcion,
-                            Estado = respuestagenero.Estado
+                            IdSiniestro = respuestasiniestro.IdSiniestro,
+                            Fecha = respuestasiniestro.Fecha,
+                            CallePrincipal = respuestasiniestro.CallePrincipal,
+                            CalleSecundaria=respuestasiniestro.CalleSecundaria,
+                            Referencia=respuestasiniestro.Referencia,
+                            IdVehiculo=respuestasiniestro.IdVehiculo
                         };
-                        
-                        return View(genero);
+
+                        return View(siniestro);
                     }
 
                 }
@@ -96,21 +98,21 @@ namespace WebSeguro.Controllers.MVC
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(string id, Genero genero)
+        public async Task<IActionResult> Edit(string id, Siniestro siniestro)
         {
             Response response = new Response();
             try
             {
                 if (!string.IsNullOrEmpty(id))
                 {
-                    response = await apiServicios.EditarAsync(id, genero, new Uri(WebApp.BaseAddress),
-                                                                 "api/Generoes");
+                    response = await apiServicios.EditarAsync(id, siniestro, new Uri(WebApp.BaseAddress),
+                                                                 "api/Siniestroes");
                     if (response.IsSuccess)
                     {
 
                         return RedirectToAction("Index");
                     }
-                   return View(genero);
+                    return View(siniestro);
 
                 }
                 return BadRequest();
@@ -126,7 +128,7 @@ namespace WebSeguro.Controllers.MVC
             try
             {
                 var response = await apiServicios.EliminarAsync(id, new Uri(WebApp.BaseAddress)
-                                                               , "api/Generoes");
+                                                               , "api/Siniestroes");
                 if (response.IsSuccess)
                 {
 
@@ -142,5 +144,4 @@ namespace WebSeguro.Controllers.MVC
             }
         }
     }
-
 }

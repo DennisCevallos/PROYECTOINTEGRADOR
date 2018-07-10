@@ -31,14 +31,14 @@
                 @Html.DisplayFor(modelItem => item.Estado)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdMenuNavigation.IdMenu)
+                @Html.DisplayFor(modelItem => item.IdMenuNavigation.Titulo)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdPerfilNavigation.IdPerfil)
+                @Html.DisplayFor(modelItem => item.IdPerfilNavigation.Descripcion)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IdSubMenu">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdSubMenu">Details</a> |
+                @*<a asp-action="Details" asp-route-id="@item.IdSubMenu">Details</a> |*@
                 <a asp-action="Delete" asp-route-id="@item.IdSubMenu">Delete</a>
             </td>
         </tr>

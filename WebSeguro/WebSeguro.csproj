@@ -22,6 +22,9 @@
   <ItemGroup>
     <Folder Include="Views\Generos\" />
     <Folder Include="Views\ItemMenu\" />
+    <Folder Include="Views\Polizas\" />
+    <Folder Include="Views\Siniestroes\" />
+    <Folder Include="Views\Perfils\" />
   </ItemGroup>
 
 </Project>
