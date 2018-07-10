@@ -26,7 +26,7 @@ namespace WebSeguro.Controllers.MVC
             try
             {
                 lista = await apiServicios.Listar<Menu>(new Uri(WebApp.BaseAddress)
-                                                                    , "api/Menus/ListarMenu");
+                                                                    , "api/Menus/ListarMenus");
                 return View(lista);
             }
             catch (Exception ex)
@@ -47,7 +47,7 @@ namespace WebSeguro.Controllers.MVC
             {
                 response = await apiServicios.InsertarAsync(menu,
                                                              new Uri(WebApp.BaseAddress),
-                                                             "api/Menus/InsertarMenu");
+                                                             "api/Menus/InsertarMenus");
                 if (response.IsSuccess)
                 {
                     return RedirectToAction("Index");

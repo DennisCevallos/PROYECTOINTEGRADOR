@@ -25,10 +25,10 @@
                     @Html.DisplayNameFor(model => model.Estado)
                 </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdPerfilNavigation)
+                @Html.DisplayNameFor(model => model.IdPerfil)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IdPersonaNavigation)
+                @Html.DisplayNameFor(model => model.IdPersona)
             </th>
             <th></th>
         </tr>
@@ -56,7 +56,6 @@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IdLogin">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdLogin">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.IdLogin">Delete</a>
             </td>
         </tr>

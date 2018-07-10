@@ -24,6 +24,9 @@
     <Folder Include="Views\Generos\" />
     <Folder Include="Views\Menus\" />
     <Folder Include="Views\Logins\" />
+    <Folder Include="Views\Modelos\" />
+    <Folder Include="Views\Vehiculos\" />
+    <Folder Include="Views\TipoVehiculo\" />
   </ItemGroup>
 
 </Project>
