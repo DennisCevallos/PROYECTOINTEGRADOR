@@ -10,24 +10,24 @@ using Servicios.Interfaces;
 
 namespace WebSeguro.Controllers.MVC
 {
-    public class GenerosController : Controller
+    public class MarcasController : Controller
     {
 
         private readonly IApiServicio apiServicios;
 
 
-        public GenerosController(IApiServicio apiServicios)
+        public MarcasController(IApiServicio apiServicios)
         {
             this.apiServicios = apiServicios;
         }
         public async Task<IActionResult> Index()
         {
 
-            var lista = new List<Genero>();
+            var lista = new List<Marca>();
             try
             {
-                lista = await apiServicios.Listar<Genero>(new Uri(WebApp.BaseAddress)
-                                                                    , "api/Generoes/ListarGenero");
+                lista = await apiServicios.Listar<Marca>(new Uri(WebApp.BaseAddress)
+                                                                    , "api/Marcas/ListarMarcas");
                 return View(lista);
             }
             catch (Exception ex)
@@ -40,19 +40,19 @@ namespace WebSeguro.Controllers.MVC
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Genero genero)
+        public async Task<IActionResult> Create(Marca marca)
         {
            Response response = new Response();
             try
             {
-                response = await apiServicios.InsertarAsync(genero,
+                response = await apiServicios.InsertarAsync(marca,
                                                              new Uri(WebApp.BaseAddress),
-                                                             "api/Generoes/InsertarGenero");
+                                                             "api/Marcas/InsertarMarca");
                 if (response.IsSuccess)
                 {
                     return RedirectToAction("Index");
                 }
-                 return View(genero);
+                 return View(marca);
 
             }
             catch (Exception ex)
@@ -69,19 +69,19 @@ namespace WebSeguro.Controllers.MVC
                 if (!string.IsNullOrEmpty(id))
                 {
                     var respuesta = await apiServicios.SeleccionarAsync<Response>(id, new Uri(WebApp.BaseAddress),
-                                                                  "api/Generoes");
+                                                                  "api/Marcas");
                     if (respuesta.IsSuccess)
                     {
 
-                        var respuestagenero = JsonConvert.DeserializeObject<Genero>(respuesta.Resultado.ToString());
-                        var genero = new Genero
+                        var respuestamarca = JsonConvert.DeserializeObject<Marca>(respuesta.Resultado.ToString());
+                        var marca = new Marca
                         {
-                            IdGenero = respuestagenero.IdGenero,
-                            Descripcion = respuestagenero.Descripcion,
-                            Estado = respuestagenero.Estado
+                            IdMarca = respuestamarca.IdMarca,
+                            Descripcion = respuestamarca.Descripcion,
+                            Estado = respuestamarca.Estado
                         };
                         
-                        return View(genero);
+                        return View(marca);
                     }
 
                 }
@@ -95,21 +95,21 @@ namespace WebSeguro.Controllers.MVC
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(string id, Genero genero)
+        public async Task<IActionResult> Edit(string id, Marca marca)
         {
             Response response = new Response();
             try
             {
                 if (!string.IsNullOrEmpty(id))
                 {
-                    response = await apiServicios.EditarAsync(id, genero, new Uri(WebApp.BaseAddress),
-                                                                 "api/Generoes");
+                    response = await apiServicios.EditarAsync(id, marca, new Uri(WebApp.BaseAddress),
+                                                                 "api/Marcas");
                     if (response.IsSuccess)
                     {
 
                         return RedirectToAction("Index");
                     }
-                   return View(genero);
+                   return View(marca);
 
                 }
                 return BadRequest();
@@ -125,7 +125,7 @@ namespace WebSeguro.Controllers.MVC
             try
             {
                 var response = await apiServicios.EliminarAsync(id, new Uri(WebApp.BaseAddress)
-                                                               , "api/Generoes");
+                                                               , "api/Marcas");
                 if (response.IsSuccess)
                 {
 
@@ -135,8 +135,7 @@ namespace WebSeguro.Controllers.MVC
             }
             catch (Exception ex)
             {
-
-
+                
                 return BadRequest();
             }
         }

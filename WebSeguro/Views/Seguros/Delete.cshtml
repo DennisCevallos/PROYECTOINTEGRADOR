@@ -1,0 +1,51 @@
+﻿@model Entidades.Negocio.Seguro
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Seguro</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ValAsegurado)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.ValAsegurado)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Tasa)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Tasa)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PrimaSeguro)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PrimaSeguro)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IdPolizaNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IdPolizaNavigation.IdPoliza)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IdVehiculoNavigation)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IdVehiculoNavigation.IdVehiculo)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="IdSeguro" />
+        <input type="submit" value="Delete" class="btn btn-default" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>
