@@ -1,0 +1,71 @@
+﻿@model IEnumerable<Entidades.Negocio.Poliza>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FechaCoverturaI)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FechaCoverturaF)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.NumPoliza)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Factura)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotValAsegurado)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotValPrima)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IdPersonaNavigation)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaCoverturaI)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaCoverturaF)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumPoliza)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Factura)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotValAsegurado)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotValPrima)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdPersonaNavigation.IdPersona)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdPoliza">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.IdPoliza">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdPoliza">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
