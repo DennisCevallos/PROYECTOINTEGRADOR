@@ -10,24 +10,24 @@ using Servicios.Interfaces;
 
 namespace WebSeguro.Controllers.MVC
 {
-    public class GenerosController : Controller
+    public class PersonasController : Controller
     {
 
         private readonly IApiServicio apiServicios;
 
 
-        public GenerosController(IApiServicio apiServicios)
+        public PersonasController(IApiServicio apiServicios)
         {
             this.apiServicios = apiServicios;
         }
         public async Task<IActionResult> Index()
         {
 
-            var lista = new List<Genero>();
+            var lista = new List<Persona>();
             try
             {
-                lista = await apiServicios.Listar<Genero>(new Uri(WebApp.BaseAddress)
-                                                                    , "api/Generoes/ListarGenero");
+                lista = await apiServicios.Listar<Persona>(new Uri(WebApp.BaseAddress)
+                                                                    , "api/Personas/ListarPersonas");
                 return View(lista);
             }
             catch (Exception ex)
@@ -40,19 +40,19 @@ namespace WebSeguro.Controllers.MVC
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Genero genero)
+        public async Task<IActionResult> Create(Persona persona)
         {
            Response response = new Response();
             try
             {
-                response = await apiServicios.InsertarAsync(genero,
+                response = await apiServicios.InsertarAsync(persona,
                                                              new Uri(WebApp.BaseAddress),
-                                                             "api/Generoes/InsertarGenero");
+                                                             "api/Personas/InsertarPersona");
                 if (response.IsSuccess)
                 {
                     return RedirectToAction("Index");
                 }
-                 return View(genero);
+                 return View(persona);
 
             }
             catch (Exception ex)
@@ -69,19 +69,26 @@ namespace WebSeguro.Controllers.MVC
                 if (!string.IsNullOrEmpty(id))
                 {
                     var respuesta = await apiServicios.SeleccionarAsync<Response>(id, new Uri(WebApp.BaseAddress),
-                                                                  "api/Generoes");
+                                                                  "api/Personas");
                     if (respuesta.IsSuccess)
                     {
 
-                        var respuestagenero = JsonConvert.DeserializeObject<Genero>(respuesta.Resultado.ToString());
-                        var genero = new Genero
+                        var respuestaPersona = JsonConvert.DeserializeObject<Persona>(respuesta.Resultado.ToString());
+                        var persona = new Persona
                         {
-                            IdGenero = respuestagenero.IdGenero,
-                            Descripcion = respuestagenero.Descripcion,
-                            Estado = respuestagenero.Estado
+                            IdPersona = respuestaPersona.IdPersona,
+                            Identificacion = respuestaPersona.Identificacion,
+                            Nombres = respuestaPersona.Nombres,
+                            Apellido = respuestaPersona.Apellido,
+                            Direccion = respuestaPersona.Direccion,
+                            Email = respuestaPersona.Email,
+                            Telefono = respuestaPersona.Telefono,
+                            Celular = respuestaPersona.Celular,
+                            Estado = respuestaPersona.Estado,
+                            IdGenero = respuestaPersona.IdGenero
                         };
-                        
-                        return View(genero);
+                                                
+                        return View(persona);
                     }
 
                 }
@@ -95,21 +102,21 @@ namespace WebSeguro.Controllers.MVC
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(string id, Genero genero)
+        public async Task<IActionResult> Edit(string id, Persona persona)
         {
             Response response = new Response();
             try
             {
                 if (!string.IsNullOrEmpty(id))
                 {
-                    response = await apiServicios.EditarAsync(id, genero, new Uri(WebApp.BaseAddress),
-                                                                 "api/Generoes");
+                    response = await apiServicios.EditarAsync(id, persona, new Uri(WebApp.BaseAddress),
+                                                                 "api/Personas");
                     if (response.IsSuccess)
                     {
 
                         return RedirectToAction("Index");
                     }
-                   return View(genero);
+                   return View(persona);
 
                 }
                 return BadRequest();
@@ -125,7 +132,7 @@ namespace WebSeguro.Controllers.MVC
             try
             {
                 var response = await apiServicios.EliminarAsync(id, new Uri(WebApp.BaseAddress)
-                                                               , "api/Generoes");
+                                                               , "api/Personas");
                 if (response.IsSuccess)
                 {
 

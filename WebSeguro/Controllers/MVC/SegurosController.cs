@@ -10,24 +10,24 @@ using Servicios.Interfaces;
 
 namespace WebSeguro.Controllers.MVC
 {
-    public class GenerosController : Controller
+    public class SegurosController : Controller
     {
 
         private readonly IApiServicio apiServicios;
 
 
-        public GenerosController(IApiServicio apiServicios)
+        public SegurosController(IApiServicio apiServicios)
         {
             this.apiServicios = apiServicios;
         }
         public async Task<IActionResult> Index()
         {
 
-            var lista = new List<Genero>();
+            var lista = new List<Seguro>();
             try
             {
-                lista = await apiServicios.Listar<Genero>(new Uri(WebApp.BaseAddress)
-                                                                    , "api/Generoes/ListarGenero");
+                lista = await apiServicios.Listar<Seguro>(new Uri(WebApp.BaseAddress)
+                                                                    , "api/Seguros/ListarSeguros");
                 return View(lista);
             }
             catch (Exception ex)
@@ -40,19 +40,19 @@ namespace WebSeguro.Controllers.MVC
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Genero genero)
+        public async Task<IActionResult> Create(Seguro seguro)
         {
            Response response = new Response();
             try
             {
-                response = await apiServicios.InsertarAsync(genero,
+                response = await apiServicios.InsertarAsync(seguro,
                                                              new Uri(WebApp.BaseAddress),
-                                                             "api/Generoes/InsertarGenero");
+                                                             "api/Seguros/InsertarSeguro");
                 if (response.IsSuccess)
                 {
                     return RedirectToAction("Index");
                 }
-                 return View(genero);
+                 return View(seguro);
 
             }
             catch (Exception ex)
@@ -69,19 +69,23 @@ namespace WebSeguro.Controllers.MVC
                 if (!string.IsNullOrEmpty(id))
                 {
                     var respuesta = await apiServicios.SeleccionarAsync<Response>(id, new Uri(WebApp.BaseAddress),
-                                                                  "api/Generoes");
+                                                                  "api/Seguros");
                     if (respuesta.IsSuccess)
                     {
 
-                        var respuestagenero = JsonConvert.DeserializeObject<Genero>(respuesta.Resultado.ToString());
-                        var genero = new Genero
+                        var respuestaSeguro = JsonConvert.DeserializeObject<Seguro>(respuesta.Resultado.ToString());
+                        var seguro = new Seguro
                         {
-                            IdGenero = respuestagenero.IdGenero,
-                            Descripcion = respuestagenero.Descripcion,
-                            Estado = respuestagenero.Estado
+                            IdSeguro = respuestaSeguro.IdSeguro,
+                            IdPoliza = respuestaSeguro.IdPoliza,
+                            IdVehiculo=respuestaSeguro.IdVehiculo,
+                            ValAsegurado=respuestaSeguro.ValAsegurado,
+                            Tasa=respuestaSeguro.Tasa,
+                            PrimaSeguro=respuestaSeguro.PrimaSeguro
+
                         };
                         
-                        return View(genero);
+                        return View(seguro);
                     }
 
                 }
@@ -95,21 +99,21 @@ namespace WebSeguro.Controllers.MVC
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(string id, Genero genero)
+        public async Task<IActionResult> Edit(string id, Seguro seguro)
         {
             Response response = new Response();
             try
             {
                 if (!string.IsNullOrEmpty(id))
                 {
-                    response = await apiServicios.EditarAsync(id, genero, new Uri(WebApp.BaseAddress),
-                                                                 "api/Generoes");
+                    response = await apiServicios.EditarAsync(id, seguro, new Uri(WebApp.BaseAddress),
+                                                                 "api/Seguros");
                     if (response.IsSuccess)
                     {
 
                         return RedirectToAction("Index");
                     }
-                   return View(genero);
+                   return View(seguro);
 
                 }
                 return BadRequest();
@@ -125,7 +129,7 @@ namespace WebSeguro.Controllers.MVC
             try
             {
                 var response = await apiServicios.EliminarAsync(id, new Uri(WebApp.BaseAddress)
-                                                               , "api/Generoes");
+                                                               , "api/Seguros");
                 if (response.IsSuccess)
                 {
 
@@ -135,8 +139,7 @@ namespace WebSeguro.Controllers.MVC
             }
             catch (Exception ex)
             {
-
-
+                
                 return BadRequest();
             }
         }
