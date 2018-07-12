@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Entidades.Negocio;
 using Entidades.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Servicios.Interfaces;
 
@@ -38,6 +39,8 @@ namespace WebSeguro.Controllers.MVC
         }
         public async Task<IActionResult> Create()
         {
+            ViewData["IdPersona"] = new SelectList(await apiServicios.Listar<Persona>(new Uri(WebApp.BaseAddress), "api/Personas/ListarPersonas"), "IdPersona", "Nombres");
+            ViewData["IdPerfil"] = new SelectList(await apiServicios.Listar<Perfil>(new Uri(WebApp.BaseAddress), "api/Perfils/ListarPerfil"), "IdPerfil", "Descripcion");
             return View();
         }
         [HttpPost]
@@ -78,13 +81,14 @@ namespace WebSeguro.Controllers.MVC
                         var login = new Login
                         {
                             IdLogin = respuestalogin.IdLogin,
-                            FechaCambio = respuestalogin.FechaCambio,
+                            FechaCambio = DateTime.Now,
                             Clave = respuestalogin.Clave,
                             Usuario = respuestalogin.Usuario,
                             Estado = respuestalogin.Estado,
-                            IdPersona = respuestalogin.IdPersona,
-                            IdPerfil = respuestalogin.IdPerfil
                         };
+
+                        ViewData["IdPersona"] = new SelectList(await apiServicios.Listar<Persona>(new Uri(WebApp.BaseAddress), "api/Personas/ListarPersonas"), "IdPersona", "Nombres");
+                        ViewData["IdPerfil"] = new SelectList(await apiServicios.Listar<Perfil>(new Uri(WebApp.BaseAddress), "api/Perfils/ListarPerfil"), "IdPerfil", "Descripcion");
 
                         return View(login);
                     }
@@ -114,6 +118,8 @@ namespace WebSeguro.Controllers.MVC
 
                         return RedirectToAction("Index");
                     }
+                    ViewBag["IdPersona"] = new SelectList(await apiServicios.Listar<Persona>(new Uri(WebApp.BaseAddress), "api/Personas/ListarPersonas"), "IdPersona", "Nombres");
+                    ViewData["IdPerfil"] = new SelectList(await apiServicios.Listar<Perfil>(new Uri(WebApp.BaseAddress), "api/Perfils/ListarPerfil"), "IdPerfil", "Descripcion");
                     return View(login);
 
                 }

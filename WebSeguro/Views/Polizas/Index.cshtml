@@ -58,11 +58,10 @@
                 @Html.DisplayFor(modelItem => item.TotValPrima)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdPersonaNavigation.IdPersona)
+                @Html.DisplayFor(modelItem => item.IdPersona)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IdPoliza">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdPoliza">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.IdPoliza">Delete</a>
             </td>
         </tr>

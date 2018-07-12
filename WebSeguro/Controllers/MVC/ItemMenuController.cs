@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Entidades.Negocio;
 using Entidades.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Servicios.Interfaces;
 
@@ -37,6 +38,8 @@ namespace WebSeguro.Controllers.MVC
         }
         public async Task<IActionResult> Create()
         {
+            ViewData["IdPerfil"] = new SelectList(await apiServicios.Listar<Perfil>(new Uri(WebApp.BaseAddress), "api/Perfils/ListarPerfil"), "IdPerfil", "Descripcion");
+            ViewData["IdMenu"] = new SelectList(await apiServicios.Listar<Menu>(new Uri(WebApp.BaseAddress), "api/Menus/ListarMenus"), "IdMenu", "Titulo");
             return View();
         }
         [HttpPost]
@@ -77,10 +80,11 @@ namespace WebSeguro.Controllers.MVC
                         var itemmenu = new ItemMenu
                         {
                             IdSubMenu = respuestaitemmenu.IdSubMenu,
-                            IdPerfil = respuestaitemmenu.IdPerfil,
-                            IdMenu = respuestaitemmenu.IdMenu,
+                           
                             Estado=respuestaitemmenu.Estado
                         };
+                        ViewData["IdPerfil"] = new SelectList(await apiServicios.Listar<Perfil>(new Uri(WebApp.BaseAddress), "api/Perfils/ListarPerfil"), "IdPerfil", "Descripcion");
+                        ViewData["IdMenu"] = new SelectList(await apiServicios.Listar<Menu>(new Uri(WebApp.BaseAddress), "api/Menus/ListarMenus"), "IdMenu", "Titulo");
 
                         return View(itemmenu);
                     }
@@ -110,6 +114,8 @@ namespace WebSeguro.Controllers.MVC
 
                         return RedirectToAction("Index");
                     }
+                    ViewData["IdPerfil"] = new SelectList(await apiServicios.Listar<Perfil>(new Uri(WebApp.BaseAddress), "api/Perfils/ListarPerfil"), "IdPerfil", "Descripcion");
+                    ViewData["IdMenu"] = new SelectList(await apiServicios.Listar<Menu>(new Uri(WebApp.BaseAddress), "api/Menus/ListarMenus"), "IdMenu", "Titulo");
                     return View(itemmenu);
 
                 }

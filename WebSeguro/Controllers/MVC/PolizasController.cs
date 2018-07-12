@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Entidades.Negocio;
 using Entidades.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Servicios.Interfaces;
 
@@ -37,6 +38,7 @@ namespace WebSeguro.Controllers.MVC
         }
         public async Task<IActionResult> Create()
         {
+            ViewData["IdPersona"] = new SelectList(await apiServicios.Listar<Persona>(new Uri(WebApp.BaseAddress), "api/Personas/ListarPersonas"), "IdPersona", "Nombres");
             return View();
         }
         [HttpPost]
@@ -82,8 +84,8 @@ namespace WebSeguro.Controllers.MVC
                             Factura=respuestapoliza.Factura,
                             TotValAsegurado=respuestapoliza.TotValAsegurado,
                             TotValPrima=respuestapoliza.TotValPrima,
-                            IdPersona=respuestapoliza.IdPersona
                         };
+                        ViewData["IdPersona"] = new SelectList(await apiServicios.Listar<Persona>(new Uri(WebApp.BaseAddress), "api/Personas/ListarPersonas"), "IdPersona", "Nombres");
 
                         return View(poliza);
                     }
@@ -113,6 +115,8 @@ namespace WebSeguro.Controllers.MVC
 
                         return RedirectToAction("Index");
                     }
+
+                    ViewData["IdPersona"] = new SelectList(await apiServicios.Listar<Persona>(new Uri(WebApp.BaseAddress), "api/Personas/ListarPersonas"), "IdPersona", "Nombres");
                     return View(poliza);
 
                 }
