@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Entidades.Negocio;
 using Entidades.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Servicios.Interfaces;
 
@@ -37,6 +38,8 @@ namespace WebSeguro.Controllers.MVC
         }
         public async Task<IActionResult> Create()
         {
+            ViewData["IdVehiculo"] = new SelectList(await apiServicios.Listar<Vehiculo>(new Uri(WebApp.BaseAddress), "api/Vehiculoes/ListarVehiculos"), "IdVehiculo", "Placa");
+
             return View();
         }
         [HttpPost]
@@ -81,9 +84,9 @@ namespace WebSeguro.Controllers.MVC
                             CallePrincipal = respuestasiniestro.CallePrincipal,
                             CalleSecundaria=respuestasiniestro.CalleSecundaria,
                             Referencia=respuestasiniestro.Referencia,
-                            IdVehiculo=respuestasiniestro.IdVehiculo
                         };
 
+                        ViewData["IdVehiculo"] = new SelectList(await apiServicios.Listar<Vehiculo>(new Uri(WebApp.BaseAddress), "api/Vehiculoes/ListarVehiculos"), "IdVehiculo", "Placa");
                         return View(siniestro);
                     }
 
@@ -112,6 +115,8 @@ namespace WebSeguro.Controllers.MVC
 
                         return RedirectToAction("Index");
                     }
+
+                    ViewData["IdVehiculo"] = new SelectList(await apiServicios.Listar<Vehiculo>(new Uri(WebApp.BaseAddress), "api/Vehiculoes/ListarVehiculos"), "IdVehiculo", "Placa");
                     return View(siniestro);
 
                 }

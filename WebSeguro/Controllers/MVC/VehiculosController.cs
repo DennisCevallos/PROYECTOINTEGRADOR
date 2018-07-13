@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Entidades.Negocio;
 using Entidades.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Servicios.Interfaces;
 
@@ -33,11 +34,15 @@ namespace WebSeguro.Controllers.MVC
             catch (Exception ex)
             {
                 return BadRequest();
-                //hola todos
+                
             }
         }
         public async Task<IActionResult> Create()
         {
+            ViewData["IdMarca"] = new SelectList(await apiServicios.Listar<Marca>(new Uri(WebApp.BaseAddress), "api/Marcas/ListarMarcas"), "IdMarca", "Descripcion");
+            ViewData["IdModelo"] = new SelectList(await apiServicios.Listar<Modelo>(new Uri(WebApp.BaseAddress), "api/Modeloes/ListarModelo"), "IdModelo", "Descripcion");
+            ViewData["IdColor"] = new SelectList(await apiServicios.Listar<Color>(new Uri(WebApp.BaseAddress), "api/Colors/ListarColors"), "IdColor", "Descripcion");
+            ViewData["IdTipoVehiculo"] = new SelectList(await apiServicios.Listar<TipoVehiculo>(new Uri(WebApp.BaseAddress), "api/TipoVehiculoes/ListarTipoVehiculo"), "IdTipoVehiculo", "Descripcion");
             return View();
         }
         [HttpPost]
@@ -78,17 +83,18 @@ namespace WebSeguro.Controllers.MVC
                         var vehiculo = new Vehiculo
                         {
                             IdVehiculo = respuestaVehiculo.IdVehiculo,
-                            IdMarca = respuestaVehiculo.IdMarca,
-                            IdModelo = respuestaVehiculo.IdModelo,
                             Placa = respuestaVehiculo.Placa,
                             Chasis = respuestaVehiculo.Chasis,
-                            IdColor = respuestaVehiculo.IdColor,
                             Observaciones = respuestaVehiculo.Observaciones,
-                            IdTipoVehiculo = respuestaVehiculo.IdTipoVehiculo,
                             Estado = respuestaVehiculo.Estado,
                             AnioDeFabricacion = respuestaVehiculo.AnioDeFabricacion,
                             Url = respuestaVehiculo.Url
                         };
+
+                        ViewData["IdMarca"] = new SelectList(await apiServicios.Listar<Marca>(new Uri(WebApp.BaseAddress), "api/Marcas/ListarMarcas"), "IdMarca", "Descripcion");
+                        ViewData["IdModelo"] = new SelectList(await apiServicios.Listar<Modelo>(new Uri(WebApp.BaseAddress), "api/Modeloes/ListarModelo"), "IdModelo", "Descripcion");
+                        ViewData["IdColor"] = new SelectList(await apiServicios.Listar<Color>(new Uri(WebApp.BaseAddress), "api/Colors/ListarColors"), "IdColor", "Descripcion");
+                        ViewData["IdTipoVehiculo"] = new SelectList(await apiServicios.Listar<TipoVehiculo>(new Uri(WebApp.BaseAddress), "api/TipoVehiculoes/ListarTipoVehiculo"), "IdTipoVehiculo", "Descripcion");
 
                         return View(vehiculo);
                     }
@@ -118,6 +124,10 @@ namespace WebSeguro.Controllers.MVC
 
                         return RedirectToAction("Index");
                     }
+                    ViewData["IdMarca"] = new SelectList(await apiServicios.Listar<Marca>(new Uri(WebApp.BaseAddress), "api/Marcas/ListarMarcas"), "IdMarca", "Descripcion");
+                    ViewData["IdModelo"] = new SelectList(await apiServicios.Listar<Modelo>(new Uri(WebApp.BaseAddress), "api/Modeloes/ListarModelo"), "IdModelo", "Descripcion");
+                    ViewData["IdColor"] = new SelectList(await apiServicios.Listar<Color>(new Uri(WebApp.BaseAddress), "api/Colors/ListarColors"), "IdColor", "Descripcion");
+                    ViewData["IdTipoVehiculo"] = new SelectList(await apiServicios.Listar<TipoVehiculo>(new Uri(WebApp.BaseAddress), "api/TipoVehiculoes/ListarTipoVehiculo"), "IdTipoVehiculo", "Descripcion");
                     return View(vehiculo);
 
                 }

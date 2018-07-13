@@ -43,14 +43,13 @@
                 @Html.DisplayFor(modelItem => item.PrimaSeguro)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdPolizaNavigation.IdPoliza)
+                @Html.DisplayFor(modelItem => item.IdPoliza)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdVehiculoNavigation.IdVehiculo)
+                @Html.DisplayFor(modelItem => item.IdVehiculo)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.IdSeguro">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdSeguro">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.IdSeguro">Delete</a>
             </td>
         </tr>

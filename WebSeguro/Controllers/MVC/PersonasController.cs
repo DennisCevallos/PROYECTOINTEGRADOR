@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Entidades.Negocio;
 using Entidades.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Servicios.Interfaces;
 
@@ -37,6 +38,7 @@ namespace WebSeguro.Controllers.MVC
         }
         public async Task<IActionResult> Create()
         {
+            ViewData["IdGenero"] = new SelectList(await apiServicios.Listar<Genero>(new Uri(WebApp.BaseAddress), "api/Generoes/ListarGenero"), "IdGenero", "Descripcion");
             return View();
         }
         [HttpPost]
@@ -85,9 +87,10 @@ namespace WebSeguro.Controllers.MVC
                             Telefono = respuestaPersona.Telefono,
                             Celular = respuestaPersona.Celular,
                             Estado = respuestaPersona.Estado,
-                            IdGenero = respuestaPersona.IdGenero
                         };
-                                                
+
+                        ViewData["IdGenero"] = new SelectList(await apiServicios.Listar<Genero>(new Uri(WebApp.BaseAddress), "api/Generoes/ListarGenero"), "IdGenero", "Descripcion");
+
                         return View(persona);
                     }
 
@@ -116,7 +119,8 @@ namespace WebSeguro.Controllers.MVC
 
                         return RedirectToAction("Index");
                     }
-                   return View(persona);
+                    ViewData["IdGenero"] = new SelectList(await apiServicios.Listar<Genero>(new Uri(WebApp.BaseAddress), "api/Generoes/ListarGenero"), "IdGenero", "Descripcion");
+                    return View();
 
                 }
                 return BadRequest();

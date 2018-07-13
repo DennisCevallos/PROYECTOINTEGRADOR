@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Entidades.Negocio;
 using Entidades.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using Servicios.Interfaces;
 
@@ -27,7 +28,7 @@ namespace WebSeguro.Controllers.MVC
             try
             {
                 lista = await apiServicios.Listar<Seguro>(new Uri(WebApp.BaseAddress)
-                                                                    , "api/Seguros/ListarSeguros");
+                                                                    , "api/Seguroes/ListarSeguros");
                 return View(lista);
             }
             catch (Exception ex)
@@ -37,22 +38,24 @@ namespace WebSeguro.Controllers.MVC
         }
         public async Task<IActionResult> Create()
         {
+            ViewData["IdPoliza"] = new SelectList(await apiServicios.Listar<Poliza>(new Uri(WebApp.BaseAddress), "api/Polizas/ListarPoliza"), "IdPoliza", "numPoliza");
+            ViewData["IdVehiculo"] = new SelectList(await apiServicios.Listar<Vehiculo>(new Uri(WebApp.BaseAddress), "api/Vehiculoes/ListarVehiculos"), "IdVehiculo", "Placa");
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> Create(Seguro seguro)
         {
-           Response response = new Response();
+            Response response = new Response();
             try
             {
                 response = await apiServicios.InsertarAsync(seguro,
                                                              new Uri(WebApp.BaseAddress),
-                                                             "api/Seguros/InsertarSeguro");
+                                                             "api/Seguroes/InsertarSeguros");
                 if (response.IsSuccess)
                 {
                     return RedirectToAction("Index");
                 }
-                 return View(seguro);
+                return View(seguro);
 
             }
             catch (Exception ex)
@@ -69,22 +72,21 @@ namespace WebSeguro.Controllers.MVC
                 if (!string.IsNullOrEmpty(id))
                 {
                     var respuesta = await apiServicios.SeleccionarAsync<Response>(id, new Uri(WebApp.BaseAddress),
-                                                                  "api/Seguros");
+                                                                  "api/Seguroes");
                     if (respuesta.IsSuccess)
                     {
 
-                        var respuestaSeguro = JsonConvert.DeserializeObject<Seguro>(respuesta.Resultado.ToString());
+                        var respuestaseguro = JsonConvert.DeserializeObject<Seguro>(respuesta.Resultado.ToString());
                         var seguro = new Seguro
                         {
-                            IdSeguro = respuestaSeguro.IdSeguro,
-                            IdPoliza = respuestaSeguro.IdPoliza,
-                            IdVehiculo=respuestaSeguro.IdVehiculo,
-                            ValAsegurado=respuestaSeguro.ValAsegurado,
-                            Tasa=respuestaSeguro.Tasa,
-                            PrimaSeguro=respuestaSeguro.PrimaSeguro
-
+                           IdSeguro = respuestaseguro.IdSeguro,
+                           ValAsegurado = respuestaseguro.ValAsegurado,
+                           Tasa = respuestaseguro.Tasa,
+                           PrimaSeguro = respuestaseguro.PrimaSeguro
                         };
-                        
+                        ViewData["IdPoliza"] = new SelectList(await apiServicios.Listar<Poliza>(new Uri(WebApp.BaseAddress), "api/Polizas/ListarPoliza"), "IdPoliza", "numPoliza");
+                        ViewData["IdVehiculo"] = new SelectList(await apiServicios.Listar<Vehiculo>(new Uri(WebApp.BaseAddress), "api/Vehiculoes/ListarVehiculos"), "IdVehiculo", "Placa");
+
                         return View(seguro);
                     }
 
@@ -107,13 +109,16 @@ namespace WebSeguro.Controllers.MVC
                 if (!string.IsNullOrEmpty(id))
                 {
                     response = await apiServicios.EditarAsync(id, seguro, new Uri(WebApp.BaseAddress),
-                                                                 "api/Seguros");
+                                                                 "api/Seguroes");
                     if (response.IsSuccess)
                     {
 
                         return RedirectToAction("Index");
                     }
-                   return View(seguro);
+
+                    ViewData["IdPoliza"] = new SelectList(await apiServicios.Listar<Poliza>(new Uri(WebApp.BaseAddress), "api/Polizas/ListarPoliza"), "IdPoliza", "numPoliza");
+                    ViewData["IdVehiculo"] = new SelectList(await apiServicios.Listar<Vehiculo>(new Uri(WebApp.BaseAddress), "api/Vehiculoes/ListarVehiculos"), "IdVehiculo", "Placa");
+                    return View(seguro);
 
                 }
                 return BadRequest();
@@ -129,7 +134,7 @@ namespace WebSeguro.Controllers.MVC
             try
             {
                 var response = await apiServicios.EliminarAsync(id, new Uri(WebApp.BaseAddress)
-                                                               , "api/Seguros");
+                                                               , "api/Seguroes");
                 if (response.IsSuccess)
                 {
 
@@ -139,7 +144,7 @@ namespace WebSeguro.Controllers.MVC
             }
             catch (Exception ex)
             {
-                
+
                 return BadRequest();
             }
         }
